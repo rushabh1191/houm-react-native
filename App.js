@@ -10,77 +10,99 @@ import {
     StyleSheet,
     Text,
     View,
-    ScrollView
+    ViewPagerAndroid
 } from 'react-native';
 
-const instructions = Platform.select({
-    ios: 'Press Cmd+R to reload,\n' +
-    'Cmd+D or shake for dev menu',
-    android: 'Double tap R on your keyboard to reload,\n' +
-    'Shake or press menu button for dev menu',
-});
 
 type
 Props = {};
 export default class App extends Component<Props> {
+
+    onTabSelected(event) {
+
+        this.refs["pages"].setPage(event.nativeEvent.position)
+    }
+
+    onPageSelected(event) {
+
+        this.refs["tabs"].setPage(event.nativeEvent.position);
+    }
+
     render() {
         return (
-            <ScrollView
-                horizontal={true}
-                pagingEnabled={true}
-                style={styles.pageStyle2}
-            >
-                <View style={styles.pageStyle} key="1">
-                    <Text>First page</Text>
-                </View>
 
-                <View style={styles.pageStyle} key="1">
-                    <Text>First page</Text>
-                </View><View style={styles.pageStyle} key="1">
-                <Text>First page</Text>
-            </View><View style={styles.pageStyle} key="1">
-                <Text>First page</Text>
+            <View
+                style={{flex: 1, flexDirection: 'column'}}>
+                <ViewPagerAndroid ref="tabs" pageMargin={-250} style={styles.containerTop}
+                                  onPageSelected={this.onTabSelected.bind(this)}>
+                    <View style={styles.outerTop}>
+                        <Text style={styles.red}>Page1</Text>
+                    </View>
+                    <View style={styles.outerTop}>
+                        <Text style={styles.green}>Page3</Text>
+                    </View>
+                    <View style={styles.outerTop}>
+                        <Text style={styles.red}>Page3</Text>
+                    </View>
+                    <View style={styles.outerTop}>
+                        <Text style={styles.green}>Page3</Text>
+                    </View>
+                </ViewPagerAndroid>
+                <ViewPagerAndroid ref="pages" pageMargin={-80} style={styles.container}
+                                  onPageSelected={this.onPageSelected.bind(this)}>
+                    <View style={styles.outer}>
+                        <View style={styles.cyan}/>
+                    </View>
+                    <View style={styles.outer}>
+                        <View style={styles.pink}/>
+                    </View>
+                    <View style={styles.outer}>
+                        <View style={styles.cyan}/>
+                    </View>
+                    <View style={styles.outer}>
+                        <View style={styles.pink}/>
+                    </View>
+                </ViewPagerAndroid>
             </View>
-            </ScrollView>
         );
     }
 }
 
 const styles = StyleSheet.create({
+    containerTop: {
+        height: 30
+    },
     container: {
         flex: 1,
-
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#F5FCFF',
     },
-    welcome: {
-        fontSize: 20,
-        textAlign: 'center',
-        margin: 10,
-    },
-    instructions: {
-        textAlign: 'center',
-        color: '#333333',
-        marginBottom: 5,
-    },
-    viewPager: {
+    outer: {
         flex: 1,
-        padding: 10
+        paddingLeft: 40,
+        paddingRight: 40,
     },
-    pageStyle: {
-        backgroundColor: "#ffffff",
-        flex:1,
-        width:400
-    }, pageStyle2: {
-    }, pageStyle3: {
-        backgroundColor: "#E3e43f",
+    outerTop: {
+        flex: 1,
+        paddingLeft: 125,
+        paddingRight: 125,
+    },
+    pink: {
+        backgroundColor: 'pink',
+        flex: 1,
+    },
+    cyan: {
+        backgroundColor: 'cyan',
+        flex: 1,
+    },
+    red: {
+        backgroundColor: 'red',
+        flex: 1,
         alignItems: 'center',
-        position: "absolute",
-        left: 0,
-        right: 0,
-        bottom: 0,
-        top: 0
+        textAlign: 'center',
+    }, green: {
+        backgroundColor: 'green',
+        flex: 1,
+        textAlign: 'center',
+        alignItems: 'center'
     }
 
 });
