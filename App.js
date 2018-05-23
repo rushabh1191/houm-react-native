@@ -16,6 +16,9 @@ import {
 
 type
 Props = {};
+
+import ListPage from './Listpage'
+
 export default class App extends Component<Props> {
 
     onTabSelected(event) {
@@ -51,16 +54,16 @@ export default class App extends Component<Props> {
                 <ViewPagerAndroid ref="pages" pageMargin={-80} style={styles.container}
                                   onPageSelected={this.onPageSelected.bind(this)}>
                     <View style={styles.outer}>
-                        <View style={styles.cyan}/>
+                        <ListPage style={styles.outer}/>
                     </View>
                     <View style={styles.outer}>
-                        <View style={styles.pink}/>
+                        <ListPage style={styles.outer}/>
                     </View>
                     <View style={styles.outer}>
-                        <View style={styles.cyan}/>
+                        <ListPage style={styles.outer}/>
                     </View>
                     <View style={styles.outer}>
-                        <View style={styles.pink}/>
+                        <ListPage style={styles.outer}/>
                     </View>
                 </ViewPagerAndroid>
             </View>
