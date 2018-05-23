@@ -32,6 +32,13 @@ export default class ListPage extends Component {
         return (<FlatList
             data={this.getData()}
             renderItem={this.__renderItem}
+            ListFooterComponent={this.__renderFooter}
+        />)
+    }
+
+    __renderFooter(){
+        return (<ListItem
+            item={{title:"Load More"}}
         />)
     }
 
