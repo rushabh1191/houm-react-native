@@ -47,7 +47,7 @@ export default class ListPage extends Component {
 		const oldObject = this.state.data[id];
 
 		const newData = [...this.state.data];
-		var newObject = Object.assign({}, oldObject)
+		const newObject = Object.assign({}, oldObject)
 
 		newObject.isExpanded = !newObject.isExpanded;
 
