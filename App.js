@@ -39,18 +39,20 @@ export default class App extends Component<Props> {
                 <ViewPagerAndroid ref="tabs" pageMargin={-250} style={styles.containerTop}
                                   onPageSelected={this.onTabSelected.bind(this)}>
                     <View style={styles.outerTop}>
-                        <Text style={styles.red}>Page1</Text>
+                        <Text style={styles.tabStyle}>Page1</Text>
                     </View>
                     <View style={styles.outerTop}>
-                        <Text style={styles.green}>Page3</Text>
+                        <Text style={styles.tabStyle}>Page2</Text>
                     </View>
                     <View style={styles.outerTop}>
-                        <Text style={styles.red}>Page3</Text>
+                        <Text style={styles.tabStyle}>Page3</Text>
                     </View>
                     <View style={styles.outerTop}>
-                        <Text style={styles.green}>Page3</Text>
+                        <Text style={styles.tabStyle}>Page4</Text>
                     </View>
                 </ViewPagerAndroid>
+
+                <View style={styles.divider}/>
                 <ViewPagerAndroid ref="pages" pageMargin={-80} style={styles.container}
                                   onPageSelected={this.onPageSelected.bind(this)}>
                     <View style={styles.outer}>
@@ -92,20 +94,14 @@ const styles = StyleSheet.create({
         backgroundColor: 'pink',
         flex: 1,
     },
-    cyan: {
-        backgroundColor: 'cyan',
-        flex: 1,
+    divider: {
+        backgroundColor: 'grey',
+        height :3
     },
-    red: {
-        backgroundColor: 'red',
+    tabStyle: {
+        fontSize:20,
         flex: 1,
         alignItems: 'center',
         textAlign: 'center',
-    }, green: {
-        backgroundColor: 'green',
-        flex: 1,
-        textAlign: 'center',
-        alignItems: 'center'
     }
-
 });
