@@ -82,7 +82,7 @@ export default class ListPage extends Component {
 		var currentItem = 0;
 		var array = [];
 		while (currentItem < items) {
-			array.push({id: index, title: `Hello ${index}`, isExpanded: true});
+			array.push({id: index, title: `Hello ${index}`, isExpanded: false});
 			index++;
 			currentItem++;
 		}
