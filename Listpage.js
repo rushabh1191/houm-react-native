@@ -44,10 +44,10 @@ export default class ListPage extends Component {
 
 	__onItemPressed = (item) => {
 		const id = item.id;
-		const oldObject=this.state.data[id];
+		const oldObject = this.state.data[id];
 
 		const newData = [...this.state.data];
-		var newObject = Object.assign({},oldObject)
+		var newObject = Object.assign({}, oldObject)
 
 		newObject.isExpanded = !newObject.isExpanded;
 
@@ -108,12 +108,16 @@ class ListItem extends React.PureComponent {
 	};
 
 	render() {
-		return (<TouchableHighlight onPress={this.__onPressed}>
+		return (
 			<View style={Styles.card}>
-				<Text style={{fontSize:25,textAlign:'center'}}>{this.props.item.title}</Text>
-				{this.__getExpandedView()}
+				<TouchableHighlight onPress={this.__onPressed} underlayColor={'#fff'}>
+					<View style={{flex:1}}>
+						<Text style={{fontSize:25,textAlign:'center'}}>{this.props.item.title}</Text>
+						{this.__getExpandedView()}
+					</View>
+				</TouchableHighlight>
 			</View>
-		</TouchableHighlight>)
+		)
 	}
 }
 
