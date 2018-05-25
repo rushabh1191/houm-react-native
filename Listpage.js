@@ -77,7 +77,7 @@ class ListItem extends React.PureComponent {
     render() {
         return ( <View style={Styles.card}>
 
-            <Text>{this.props.item.title}</Text>
+            <Text style={{fontSize:25,textAlign:'center'}}>{this.props.item.title}</Text>
         </View>)
     }
 }
@@ -87,7 +87,7 @@ const Styles = StyleSheet.create({
         padding: 10,
         margin: 7,
         elevation: 3,
-        borderRadius: 5,
+        borderRadius: 20,
         flex: 1,
         backgroundColor: '#fff'
 
