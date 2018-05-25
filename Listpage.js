@@ -10,6 +10,7 @@ import {
     Text,
     FlatList,
     View,
+    TouchableHighlight
 } from 'react-native';
 
 
@@ -20,26 +21,37 @@ export default class ListPage extends Component {
 
     constructor() {
         super();
-        this.getData();
+        this.state =
+        {data: this.getData()}
     }
 
-    __renderItem({item}) {
+    __renderItem({item,index}) {
         return (<ListItem
+            key={index}
             item={item}/>)
     }
 
     render() {
         return (<FlatList
-            data={this.getData()}
+            data={this.state.data}
             renderItem={this.__renderItem}
             ListFooterComponent={this.__renderFooter}
         />)
     }
 
-    __renderFooter(){
-        return (<ListItem
-            item={{title:"Load More"}}
-        />)
+
+    __renderFooter = ()=> {
+        return (<TouchableHighlight onPress={()=> {
+
+            var currentList = this.state.data;
+            currentList=currentList.concat(this.getData());
+            this.setState({
+                data: currentList
+            })
+        }}>
+            <Text style={{fontSize: 20, textAlign: 'center', padding: 10}}> Load more ...</Text>
+
+        </TouchableHighlight>);
     }
 
     getData() {
