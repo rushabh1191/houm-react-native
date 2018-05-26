@@ -11,6 +11,7 @@ import {
     Text,
     View,
     ViewPagerAndroid,
+    Button,
     TouchableHighlight
 } from 'react-native';
 
@@ -22,6 +23,11 @@ import ListPage from './Listpage'
 
 export default class App extends Component<Props> {
 
+    constructor() {
+        super();
+        this.state = {tabs:["Tab 1", "Tab 2", "Tab 3", "Tab 4"]};
+    }
+
     onTabSelected(event) {
 
         this.refs["pages"].setPage(event.nativeEvent.position)
@@ -32,6 +38,22 @@ export default class App extends Component<Props> {
         this.refs["tabs"].setPage(event.nativeEvent.position);
     }
 
+    __changeTab = (position)=> {
+        console.log("Pos " + position);
+        this.refs["tabs"].setPage(position);
+        this.refs["pages"].setPage(position)
+    };
+    renderTabs = ()=> {
+        return this.state.tabs.map(function (tab, index) {
+            return(<View style={styles.outerTop} key={index}>
+                <Button onPress={()=> {
+                    this.__changeTab(index);
+                }}
+                title={tab}/>
+            </View>);
+        });
+
+    };
 
     render() {
         return (
@@ -40,21 +62,10 @@ export default class App extends Component<Props> {
                 style={{flex: 1, flexDirection: 'column'}}>
                 <ViewPagerAndroid ref="tabs" pageMargin={-250} style={styles.containerTop}
                                   onPageSelected={this.onTabSelected.bind(this)}>
-                    <TouchableHighlight style={styles.outerTop} onPress={()=>{
-                        console.log("Hello")
-                    }}>
-                        <Text style={styles.red}>Page1</Text>
-                    </TouchableHighlight>
-                    <View style={styles.outerTop}>
-                        <Text style={styles.green}>Page3</Text>
-                    </View>
-                    <View style={styles.outerTop}>
-                        <Text style={styles.red}>Page3</Text>
-                    </View>
-                    <View style={styles.outerTop}>
-                        <Text style={styles.green}>Page3</Text>
-                    </View>
+                    {this.renderTabs()}
                 </ViewPagerAndroid>
+
+                <View style={styles.divider}/>
                 <ViewPagerAndroid ref="pages" pageMargin={-80} style={styles.container}
                                   onPageSelected={this.onPageSelected.bind(this)}>
                     <View style={styles.outer}>
@@ -96,20 +107,14 @@ const styles = StyleSheet.create({
         backgroundColor: 'pink',
         flex: 1,
     },
-    cyan: {
-        backgroundColor: 'cyan',
-        flex: 1,
+    divider: {
+        backgroundColor: 'grey',
+        height: 3
     },
-    red: {
-        backgroundColor: 'red',
+    tabStyle: {
+        fontSize: 20,
         flex: 1,
         alignItems: 'center',
         textAlign: 'center',
-    }, green: {
-        backgroundColor: 'green',
-        flex: 1,
-        textAlign: 'center',
-        alignItems: 'center'
     }
-
 });
