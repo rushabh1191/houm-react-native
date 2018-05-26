@@ -27,9 +27,10 @@ import ListPage from './Listpage'
 
 const {width} = Dimensions.get('window');
 
+const peekWidth=60;
 const tabWidth = 240;
 const tabOffset=tabWidth/2;
-const pageWidth = 60;
+const pageWidth = width-peekWidth;
 const pageOffset=pageWidth/2;
 // import Pager from './ViewPager'
 export default class App extends Component<Props> {
@@ -50,7 +51,7 @@ export default class App extends Component<Props> {
     }
 
     __changeTab = (position)=> {
-        console.log("Pos " + position);
+
         this.scrollTabToPage(position-1);
 
     };
@@ -68,11 +69,13 @@ export default class App extends Component<Props> {
     };
 
     scrollTabToPage = (page)=>{
-        this.refs.tabs.scrollTo(0,page*tabOffset+pageOffset)
+        this.refs.tabs.scrollTo(0,(page*tabOffset)+20)
     };
 
     scrollPageToPage=(page)=>{
-        this.refs.pages.scrollTo(0,page*(pageWidth+3*pageWidth+30))
+        const position=page*pageWidth-peekWidth/2;
+        console.log(position);
+        this.refs.pages.scrollTo(0,position)
     };
 
     __handleTabScroll=()=>{
@@ -82,11 +85,10 @@ export default class App extends Component<Props> {
     __handlePageScroll=(event)=>{
 
 
-        //
     }
     componentDidMount = ()=> {
         this.scrollTabToPage(-1);
-        this.scrollPageToPage();
+        this.scrollPageToPage(1);
     };
 
     render() {
@@ -119,13 +121,13 @@ export default class App extends Component<Props> {
                     horizontal={true}
                     onScrollEndDrag={this.__handlePageScroll()}
                     decelerationRate={0}
-                    snapToInterval={width - pageWidth}
+                    snapToInterval={pageWidth}
                     snapToAlignment={"center"}
                     contentInset={{
                         top: 0,
-                        left: pageWidth / 2,
+                        left: pageOffset,
                         bottom: 0,
-                        right: pageWidth / 2,
+                        right: pageOffset,
                     }}
                     ref="pages"
                 >
@@ -156,7 +158,7 @@ const styles = StyleSheet.create({
         flex: 1
     },
     outer: {
-        width: width - pageWidth,
+        width: pageWidth,
         backgroundColor: 'red'
     },
     inside: {},
