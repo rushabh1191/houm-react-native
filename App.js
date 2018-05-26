@@ -27,11 +27,11 @@ import ListPage from './Listpage'
 
 const {width} = Dimensions.get('window');
 
-const peekWidth=60;
+const peekWidth = 60;
 const tabWidth = 240;
-const tabOffset=tabWidth/2;
-const pageWidth = width-peekWidth;
-const pageOffset=pageWidth/2;
+const tabOffset = tabWidth / 2;
+const pageWidth = width - peekWidth;
+const pageOffset = pageWidth / 2;
 // import Pager from './ViewPager'
 export default class App extends Component<Props> {
 
@@ -52,7 +52,7 @@ export default class App extends Component<Props> {
 
     __changeTab = (position)=> {
 
-        this.scrollTabToPage(position-1);
+        this.scrollTabToPage(position - 1);
 
     };
     renderTabs = ()=> {
@@ -68,23 +68,40 @@ export default class App extends Component<Props> {
 
     };
 
-    scrollTabToPage = (page)=>{
-        this.refs.tabs.scrollTo(0,(page*tabOffset)+20)
+    scrollTabToPage = (page)=> {
+        this.refs.tabs.scrollTo(0, (page * tabOffset) + 20)
     };
 
-    scrollPageToPage=(page)=>{
-        const position=page*pageWidth-peekWidth/2;
-        this.refs.pages.scrollTo(0,position)
+    scrollPageToPage = (page)=> {
+        const position = page * pageWidth - peekWidth / 2;
+        this.refs.pages.scrollTo(0, position)
     };
 
-    __handleTabScroll=(event)=>{
-        var page=event.nativeEvent.contentOffset.x/tabOffset;
-        this.scrollPageToPage(Math.floor(page)+1);
+    __handleTabScroll = (event)=> {
+        const currentPage = this.__getCurrentPage();
+        var page = event.nativeEvent.contentOffset.x / tabOffset;
+        if (currentPage !== page) {
+            this.scrollPageToPage(Math.floor(page) + 1);
+        }
     };
 
-    __handlePageScroll=(event)=>{
-        // var page=event.nativeEvent.contentOffset.x/pageOffset;
-        // this.scrollTabToPage(page)
+    __getCurrentTab() {
+        // return Math.floor(this.refs.tabs.contentOffset.x / tabOffset);
+    }
+
+    __getCurrentPage() {
+        console.log("Hello");
+        console.log(this.refs.pages);
+        // return Math.floor(this.refs.pages.contentOffset.x / tabOffset);
+    }
+
+    __handlePageScroll = (event)=> {
+        const currentTab = this.__getCurrentTab();
+        var page = event.nativeEvent.contentOffset.x / pageOffset;
+        if (page !== currentTab) {
+            // this.scrollTabToPage(page);
+        }
+
         // console.log("Page " +Math.floor(page));
     }
     componentDidMount = ()=> {
