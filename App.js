@@ -74,21 +74,22 @@ export default class App extends Component<Props> {
 
     scrollPageToPage=(page)=>{
         const position=page*pageWidth-peekWidth/2;
-        console.log(position);
         this.refs.pages.scrollTo(0,position)
     };
 
-    __handleTabScroll=()=>{
-
+    __handleTabScroll=(event)=>{
+        var page=event.nativeEvent.contentOffset.x/tabOffset;
+        this.scrollPageToPage(Math.floor(page)+1);
     };
 
     __handlePageScroll=(event)=>{
-
-
+        // var page=event.nativeEvent.contentOffset.x/pageOffset;
+        // this.scrollTabToPage(page)
+        // console.log("Page " +Math.floor(page));
     }
     componentDidMount = ()=> {
         this.scrollTabToPage(-1);
-        this.scrollPageToPage(1);
+        this.scrollPageToPage(-1);
     };
 
     render() {
@@ -103,7 +104,8 @@ export default class App extends Component<Props> {
                     decelerationRate={0}
                     snapToInterval={width - tabWidth}
                     snapToAlignment={"end"}
-                    onScrollEndDrag={this.__handleTabScroll}
+                    scrollEventThrottle={0}
+                    onScroll={this.__handleTabScroll}
                     contentInset={{
                         top: 0,
                         left: tabWidth / 2,
@@ -119,8 +121,9 @@ export default class App extends Component<Props> {
                     alwaysBounceHorizontal={false}
                     showsHorizontalScrollIndicator={false}
                     horizontal={true}
-                    onScrollEndDrag={this.__handlePageScroll()}
+                    onScroll={this.__handlePageScroll}
                     decelerationRate={0}
+
                     snapToInterval={pageWidth}
                     snapToAlignment={"center"}
                     contentInset={{
