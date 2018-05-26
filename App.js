@@ -13,7 +13,10 @@ import {
     ViewPagerAndroid,
     Button,
     FlatList,
+    ScrollView,
+    Dimensions,
     TouchableHighlight
+
 } from 'react-native';
 
 
@@ -22,7 +25,13 @@ Props = {};
 
 import ListPage from './Listpage'
 
-import ViewPager from './ViewPager'
+const {width} = Dimensions.get('window');
+
+const tabWidth = 240;
+const tabOffset=tabWidth/2;
+const pageWidth = 60;
+const pageOffset=pageWidth/2;
+// import Pager from './ViewPager'
 export default class App extends Component<Props> {
 
     constructor() {
@@ -42,35 +51,84 @@ export default class App extends Component<Props> {
 
     __changeTab = (position)=> {
         console.log("Pos " + position);
-        // this.refs["tabs"].setPage(position);
-        // this.refs["pages"].setPage(position)
+        this.scrollTabToPage(position-1);
+
     };
     renderTabs = ()=> {
-        var self=this;
+        var self = this;
         return this.state.tabs.map(function (tab, index) {
-            return(<View style={[styles.outerTop]} key={index}>
+            return (<View style={[styles.outerTop]} key={index}>
                 <Button style={styles.inside} onPress={()=> {
                     self.__changeTab(index);
                 }}
-                title={tab}/>
+                        title={tab}/>
             </View>);
         });
 
+    };
+
+    scrollTabToPage = (page)=>{
+        this.refs.tabs.scrollTo(0,page*tabOffset+pageOffset)
+    };
+
+    scrollPageToPage=(page)=>{
+        this.refs.pages.scrollTo(0,page*(pageWidth+3*pageWidth+30))
+    };
+
+    __handleTabScroll=()=>{
+
+    };
+
+    __handlePageScroll=(event)=>{
+
+
+        //
+    }
+    componentDidMount = ()=> {
+        this.scrollTabToPage(-1);
+        this.scrollPageToPage();
     };
 
     render() {
         return (
 
             <View
-                style={{flex: 1, flexDirection: 'column'}}>
-                <ViewPagerAndroid ref="tabs" pageMargin={-250} style={styles.containerTop}
-                                  onPageSelected={this.onTabSelected.bind(this)}>
+                style={{flex: 1, flexDirection: 'column', marginTop: 20}}>
+                <ScrollView
+                    alwaysBounceHorizontal={false}
+                    showsHorizontalScrollIndicator={false}
+                    horizontal={true}
+                    decelerationRate={0}
+                    snapToInterval={width - tabWidth}
+                    snapToAlignment={"end"}
+                    onScrollEndDrag={this.__handleTabScroll}
+                    contentInset={{
+                        top: 0,
+                        left: tabWidth / 2,
+                        bottom: 0,
+                        right: tabWidth / 2
+                    }}
+                    ref="tabs">
                     {this.renderTabs()}
-                </ViewPagerAndroid>
+                </ScrollView>
 
                 <View style={styles.divider}/>
-                <ViewPagerAndroid ref="pages" pageMargin={-80} style={styles.container}
-                                  onPageSelected={this.onPageSelected.bind(this)}>
+                <ScrollView
+                    alwaysBounceHorizontal={false}
+                    showsHorizontalScrollIndicator={false}
+                    horizontal={true}
+                    onScrollEndDrag={this.__handlePageScroll()}
+                    decelerationRate={0}
+                    snapToInterval={width - pageWidth}
+                    snapToAlignment={"center"}
+                    contentInset={{
+                        top: 0,
+                        left: pageWidth / 2,
+                        bottom: 0,
+                        right: pageWidth / 2,
+                    }}
+                    ref="pages"
+                >
                     <View style={styles.outer}>
                         <ListPage style={styles.outer}/>
                     </View>
@@ -83,7 +141,7 @@ export default class App extends Component<Props> {
                     <View style={styles.outer}>
                         <ListPage style={styles.outer}/>
                     </View>
-                </ViewPagerAndroid>
+                </ScrollView>
             </View>
         );
     }
@@ -91,36 +149,20 @@ export default class App extends Component<Props> {
 
 const styles = StyleSheet.create({
     containerTop: {
-        height: 30
+        height: 30,
+        flex: 1
     },
     container: {
         flex: 1
     },
     outer: {
-        flex: 1,
-        paddingLeft: 40,
-        paddingRight: 40,
+        width: width - pageWidth,
+        backgroundColor: 'red'
     },
-    inside:{
-        width:100,
-        height:100,
-        flex:0,
-        zIndex:100
-    },
+    inside: {},
     outerTop: {
         flex: 1,
-        paddingLeft: 125,
-        paddingRight: 125,
-        zIndex:100
-
-    },
-    pink: {
-        backgroundColor: 'pink',
-        flex: 1,
-    },
-    divider: {
-        backgroundColor: 'grey',
-        height: 3
+        width: width - tabWidth
     },
     tabStyle: {
         fontSize: 20,
