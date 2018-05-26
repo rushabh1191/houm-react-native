@@ -12,6 +12,7 @@ import {
     View,
     ViewPagerAndroid,
     Button,
+    FlatList,
     TouchableHighlight
 } from 'react-native';
 
@@ -21,11 +22,12 @@ Props = {};
 
 import ListPage from './Listpage'
 
+import ViewPager from './ViewPager'
 export default class App extends Component<Props> {
 
     constructor() {
         super();
-        this.state = {tabs:["Tab 1", "Tab 2", "Tab 3", "Tab 4"]};
+        this.state = {tabs: ["Tab 1", "Tab 2", "Tab 3", "Tab 4"]};
     }
 
     onTabSelected(event) {
@@ -40,14 +42,15 @@ export default class App extends Component<Props> {
 
     __changeTab = (position)=> {
         console.log("Pos " + position);
-        this.refs["tabs"].setPage(position);
-        this.refs["pages"].setPage(position)
+        // this.refs["tabs"].setPage(position);
+        // this.refs["pages"].setPage(position)
     };
     renderTabs = ()=> {
+        var self=this;
         return this.state.tabs.map(function (tab, index) {
-            return(<View style={styles.outerTop} key={index}>
-                <Button onPress={()=> {
-                    this.__changeTab(index);
+            return(<View style={[styles.outerTop]} key={index}>
+                <Button style={styles.inside} onPress={()=> {
+                    self.__changeTab(index);
                 }}
                 title={tab}/>
             </View>);
@@ -91,17 +94,25 @@ const styles = StyleSheet.create({
         height: 30
     },
     container: {
-        flex: 1,
+        flex: 1
     },
     outer: {
         flex: 1,
         paddingLeft: 40,
         paddingRight: 40,
     },
+    inside:{
+        width:100,
+        height:100,
+        flex:0,
+        zIndex:100
+    },
     outerTop: {
         flex: 1,
         paddingLeft: 125,
         paddingRight: 125,
+        zIndex:100
+
     },
     pink: {
         backgroundColor: 'pink',
