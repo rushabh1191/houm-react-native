@@ -10,7 +10,8 @@ import {
     StyleSheet,
     Text,
     View,
-    ViewPagerAndroid
+    ViewPagerAndroid,
+    TouchableHighlight
 } from 'react-native';
 
 
@@ -31,6 +32,7 @@ export default class App extends Component<Props> {
         this.refs["tabs"].setPage(event.nativeEvent.position);
     }
 
+
     render() {
         return (
 
@@ -38,9 +40,11 @@ export default class App extends Component<Props> {
                 style={{flex: 1, flexDirection: 'column'}}>
                 <ViewPagerAndroid ref="tabs" pageMargin={-250} style={styles.containerTop}
                                   onPageSelected={this.onTabSelected.bind(this)}>
-                    <View style={styles.outerTop}>
+                    <TouchableHighlight style={styles.outerTop} onPress={()=>{
+                        console.log("Hello")
+                    }}>
                         <Text style={styles.red}>Page1</Text>
-                    </View>
+                    </TouchableHighlight>
                     <View style={styles.outerTop}>
                         <Text style={styles.green}>Page3</Text>
                     </View>
