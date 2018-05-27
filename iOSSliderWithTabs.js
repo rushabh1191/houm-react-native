@@ -17,7 +17,6 @@ import {
     Button,
     FlatList,
     ScrollView,
-    Dimensions,
     TouchableHighlight
 
 } from 'react-native';
@@ -26,16 +25,6 @@ import {
 type
 Props = {};
 
-import ListPage from './Listpage'
-
-const {width} = Dimensions.get('window');
-
-const peekWidth = 60;
-const tabWidth = 240;
-const tabOffset = tabWidth / 2;
-const pageWidth = width - peekWidth;
-const pageOffset = pageWidth / 2;
-// import Pager from './ViewPager'
 export default class IOSSliderWithTabs extends Component<Props> {
 
     constructor() {
@@ -74,11 +63,11 @@ export default class IOSSliderWithTabs extends Component<Props> {
     };
 
     scrollTabToPosition = (page)=> {
-        this.refs.tabs.scrollTo(0, (page * tabOffset) + 20)
+        this.refs.tabs.scrollTo(0, (page * this.props.tabOffset) + 20)
     };
 
     scrollPageToPosition = (page)=> {
-        const position = page * pageWidth - peekWidth / 2;
+        const position = page * this.props.pageWidth - this.props.peekWidth / 2;
         this.refs.pages.scrollTo(0, position)
     };
 
@@ -88,7 +77,7 @@ export default class IOSSliderWithTabs extends Component<Props> {
     };
 
     __handlePageScroll = (event)=> {
-        var newPage = Math.floor(event.nativeEvent.targetContentOffset.x / pageWidth);
+        var newPage = Math.floor(event.nativeEvent.targetContentOffset.x / this.props.pageWidth);
         this.scrollTabToPosition(newPage);
 
     };
@@ -108,18 +97,18 @@ export default class IOSSliderWithTabs extends Component<Props> {
                     showsHorizontalScrollIndicator={false}
                     horizontal={true}
                     decelerationRate={0}
-                    snapToInterval={width - tabWidth}
+                    snapToInterval={this.props.width - this.props.tabWidth}
                     snapToAlignment={"end"}
                     scrollEventThrottle={0}
                     onScrollEndDrag={this.__handleTabScroll}
                     contentInset={{
                         top: 0,
-                        left: tabWidth / 2,
+                        left: this.props.tabWidth / 2,
                         bottom: 0,
-                        right: tabWidth / 2
+                        right: this.props.tabWidth / 2
                     }}
                     ref="tabs">
-                    {this.renderTabs()}
+                    {this.props.renderTabs()}
                 </ScrollView>
 
                 <View style={styles.divider}/>
@@ -130,28 +119,17 @@ export default class IOSSliderWithTabs extends Component<Props> {
                     onScrollEndDrag={this.__handlePageScroll}
                     decelerationRate={0}
 
-                    snapToInterval={pageWidth}
+                    snapToInterval={this.props.pageWidth}
                     snapToAlignment={"center"}
                     contentInset={{
                         top: 0,
-                        left: pageOffset,
+                        left: this.props.pageOffset,
                         bottom: 0,
-                        right: pageOffset,
+                        right: this.props.pageOffset,
                     }}
                     ref="pages"
                 >
-                    <View style={styles.outer}>
-                        <ListPage style={styles.outer}/>
-                    </View>
-                    <View style={styles.outer}>
-                        <ListPage style={styles.outer}/>
-                    </View>
-                    <View style={styles.outer}>
-                        <ListPage style={styles.outer}/>
-                    </View>
-                    <View style={styles.outer}>
-                        <ListPage style={styles.outer}/>
-                    </View>
+                    {this.props.renderPages()}
                 </ScrollView>
             </View>
         );
@@ -165,15 +143,6 @@ const styles = StyleSheet.create({
     },
     container: {
         flex: 1
-    },
-    outer: {
-        width: pageWidth,
-        backgroundColor: 'red'
-    },
-    inside: {},
-    outerTop: {
-        flex: 1,
-        width: width - tabWidth
     },
     tabStyle: {
         fontSize: 20,

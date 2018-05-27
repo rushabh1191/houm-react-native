@@ -5,33 +5,80 @@
 import React, {Component} from 'react';
 import {
     Platform,
+    StyleSheet,
+    View,
+    Dimensions,
+    Button
 
 } from 'react-native';
+
+const {width} = Dimensions.get('window');
+
+const peekWidth = 60;
+const tabWidth = 240;
+const tabOffset = tabWidth / 2;
+const pageWidth = width - peekWidth;
+const pageOffset = pageWidth / 2;
+
+
 import AndroidSlider from './AndroidSliderWithTabs'
 import IOSSlider from './iOSSliderWithTabs'
+import ListPage from './Listpage'
 export default class Launcher extends Component<Props> {
 
-    __renderPages = ()=> {
-        return (<ViewPagerAndroid ref="pages" pageMargin={-80} style={styles.container}
-                                  onPageSelected={this.onPageSelected.bind(this)}>
-            <View style={styles.outer}>
-                <ListPage style={styles.outer}/>
-            </View>
-            <View style={styles.outer}>
-                <ListPage style={styles.outer}/>
-            </View>
-            <View style={styles.outer}>
-                <ListPage style={styles.outer}/>
-            </View>
-            <View style={styles.outer}>
-                <ListPage style={styles.outer}/>
-            </View>
-        </ViewPagerAndroid>);
-    }
+    tabs = ["Tab 1", "Tab 2", "Tab 3", "Tab 4"];
 
+    __renderPages = ()=> {
+
+        var pages = [];
+
+        this.tabs.forEach((tab, index) => {
+            var outer = this.isOs() ? styles.iOSouter : styles.androidOuter;
+
+            pages.push(<View style={outer} key={index}>
+                <ListPage style={outer}/>
+            </View>);
+        });
+        return pages;
+    };
+
+    __changeTab = (position)=> {
+
+        if (this.isOs()) {
+            this.refs.iosScroll.__changeTab(position)
+        } else {
+
+        }
+    };
+
+    __renderTabs = ()=> {
+        var self = this;
+        var outer = this.isOs() ? styles.iOSOuterTop : styles.outerTop;
+        return this.tabs.map(function (tab, index) {
+            return (<View style={outer} key={index}>
+                <Button style={styles.inside} onPress={()=> {
+                    self.__changeTab(index);
+                }}
+                        title={tab}/>
+            </View>);
+        });
+
+    };
+
+    isOs = ()=> {
+        return Platform.OS === 'ios';
+    };
     render = ()=> {
         if (Platform.OS === 'ios') {
-            return <IOSSlider/>;
+            return <IOSSlider
+                ref="iosScroll"
+                peekWidth={peekWidth}
+                tabWidth={tabWidth}
+                tabOffset={tabOffset}
+                pageOffset={pageOffset}
+                pageWidth={pageWidth}
+                renderTabs={this.__renderTabs}
+                renderPages={this.__renderPages}/>;
         } else {
             return <AndroidSlider/>
         }
@@ -46,10 +93,21 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
     },
-    outer: {
+    androidOuter: {
         flex: 1,
         paddingLeft: 40,
         paddingRight: 40,
+        backgroundColor: '#E0E0E0'
+    },
+
+    iOSouter: {
+        width: pageWidth,
+        backgroundColor: '#E0E0E0'
+    },
+    inside: {},
+    iOSOuterTop: {
+        flex: 1,
+        width: width - tabWidth
     },
     outerTop: {
         flex: 1,
