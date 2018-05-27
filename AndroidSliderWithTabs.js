@@ -23,17 +23,17 @@ export default class AndroidSliderWithTabs extends Component<Props> {
     }
 
     onTabSelected(event) {
-
+        console.log("Tab "+event.nativeEvent.position);
         this.refs["pages"].setPage(event.nativeEvent.position)
     }
 
     onPageSelected(event) {
 
+        console.log("page "+event.nativeEvent.position);
         this.refs["tabs"].setPage(event.nativeEvent.position);
     }
 
     __changeTab = (position)=> {
-        console.log("Pos " + position);
         this.refs["tabs"].setPage(position);
         this.refs["pages"].setPage(position)
     };
