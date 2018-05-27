@@ -35,8 +35,8 @@ const pageOffset = pageWidth / 2;
 // import Pager from './ViewPager'
 export default class App extends Component<Props> {
 
-    currentPage = 0;
-    currentTab = 0;
+    currentPage = 0.0;
+    currentTab = 0.0;
 
     constructor() {
         super();
@@ -54,10 +54,12 @@ export default class App extends Component<Props> {
     }
 
     __changeTab = (position)=> {
-
         this.scrollTabToPosition(position - 1);
+        this.scrollPageToPosition(position)
 
     };
+
+
     renderTabs = ()=> {
         var self = this;
         return this.state.tabs.map(function (tab, index) {
@@ -72,7 +74,6 @@ export default class App extends Component<Props> {
     };
 
     scrollTabToPosition = (page)=> {
-
         this.refs.tabs.scrollTo(0, (page * tabOffset) + 20)
     };
 
@@ -82,44 +83,21 @@ export default class App extends Component<Props> {
     };
 
     __handleTabScroll = (event)=> {
-        this.currentTab = Math.floor(event.nativeEvent.contentOffset.x / tabOffset);
 
-        /*console.log("new tab " + this.currentTab);
-        var newPage;
-        if(this.currentTab==-1){
-            newPage=-1;
-        }
-        else{
-            newPage=this.currentTab*2+1;
-        }
-
-        console.log("Current page "+this.currentPage);
-        console.log("New page "+newPage);
-        /!*if (this.currentPage!== newPage) {
-            this.scrollPageToPosition(newPage);
-        }*!/*/
+        var page=Math.round(event.nativeEvent.targetContentOffset.x/200);
+        this.scrollPageToPosition(page+1);
     };
 
     __handlePageScroll = (event)=> {
-        // const currentTab = this.__getCurrentTab();
-        var page= Math.floor(event.nativeEvent.contentOffset.x / pageOffset);
-        this.currentPage=page+1;
-        var newTab;
-        if(this.currentPage==0){
-            newTab=-1;
-        }else{
-            newTab=this.currentPage/2-1;
-        }
-        if (this.currentTab !== newTab) {
-            this.scrollTabToPosition(newTab)
-        }
+        console.log(event.nativeEvent)
+        var newPage = Math.floor(event.nativeEvent.targetContentOffset.x / pageWidth);
+        this.scrollTabToPosition(newPage);
 
     };
 
 
     componentDidMount = ()=> {
-        this.scrollTabToPosition(-1);
-        this.scrollPageToPosition(0);
+        this.__changeTab(0);
     };
 
     render() {
@@ -135,7 +113,7 @@ export default class App extends Component<Props> {
                     snapToInterval={width - tabWidth}
                     snapToAlignment={"end"}
                     scrollEventThrottle={0}
-                    onScroll={this.__handleTabScroll}
+                    onScrollEndDrag={this.__handleTabScroll}
                     contentInset={{
                         top: 0,
                         left: tabWidth / 2,
@@ -151,7 +129,7 @@ export default class App extends Component<Props> {
                     alwaysBounceHorizontal={false}
                     showsHorizontalScrollIndicator={false}
                     horizontal={true}
-                    onScroll={this.__handlePageScroll}
+                    onScrollEndDrag={this.__handlePageScroll}
                     decelerationRate={0}
 
                     snapToInterval={pageWidth}
