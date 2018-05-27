@@ -99,7 +99,6 @@ const styles = StyleSheet.create({
         flex: 1,
         paddingLeft: 40,
         paddingRight: 40,
-        backgroundColor: '#E0E0E0'
     },
 
     iOSouter: {
