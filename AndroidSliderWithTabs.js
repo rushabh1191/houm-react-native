@@ -34,8 +34,8 @@ export default class AndroidSliderWithTabs extends Component<Props> {
 
     __changeTab = (position)=> {
         console.log("Pos " + position);
-        // this.refs["tabs"].setPage(position);
-        // this.refs["pages"].setPage(position)
+        this.refs["tabs"].setPage(position);
+        this.refs["pages"].setPage(position)
     };
     renderTabs = ()=> {
         return this.state.tabs.map(function (tab, index) {
@@ -62,18 +62,7 @@ export default class AndroidSliderWithTabs extends Component<Props> {
                 <View style={styles.divider}/>
                 <ViewPagerAndroid ref="pages" pageMargin={-80} style={styles.container}
                                   onPageSelected={this.onPageSelected.bind(this)}>
-                    <View style={styles.outer}>
-                        <ListPage style={styles.outer}/>
-                    </View>
-                    <View style={styles.outer}>
-                        <ListPage style={styles.outer}/>
-                    </View>
-                    <View style={styles.outer}>
-                        <ListPage style={styles.outer}/>
-                    </View>
-                    <View style={styles.outer}>
-                        <ListPage style={styles.outer}/>
-                    </View>
+                    {this.props.renderPages()}
                 </ViewPagerAndroid>
             </View>
         );

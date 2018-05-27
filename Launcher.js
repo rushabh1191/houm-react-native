@@ -47,7 +47,7 @@ export default class Launcher extends Component<Props> {
         if (this.isOs()) {
             this.refs.iosScroll.__changeTab(position)
         } else {
-
+            this.refs.androidScroll.__changeTab(position)
         }
     };
 
@@ -81,6 +81,7 @@ export default class Launcher extends Component<Props> {
                 renderPages={this.__renderPages}/>;
         } else {
             return <AndroidSlider
+                ref="androidScroll"
                 renderTabs={this.__renderTabs}
                 renderPages={this.__renderPages}/>
         }
