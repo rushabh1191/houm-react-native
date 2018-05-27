@@ -80,7 +80,9 @@ export default class Launcher extends Component<Props> {
                 renderTabs={this.__renderTabs}
                 renderPages={this.__renderPages}/>;
         } else {
-            return <AndroidSlider/>
+            return <AndroidSlider
+                renderTabs={this.__renderTabs}
+                renderPages={this.__renderPages}/>
         }
 
     }

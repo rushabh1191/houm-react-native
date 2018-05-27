@@ -49,19 +49,6 @@ export default class IOSSliderWithTabs extends Component<Props> {
     };
 
 
-    renderTabs = ()=> {
-        var self = this;
-        return this.state.tabs.map(function (tab, index) {
-            return (<View style={[styles.outerTop]} key={index}>
-                <Button style={styles.inside} onPress={()=> {
-                    self.__changeTab(index);
-                }}
-                        title={tab}/>
-            </View>);
-        });
-
-    };
-
     scrollTabToPosition = (page)=> {
         this.refs.tabs.scrollTo(0, (page * this.props.tabOffset) + 20)
     };
@@ -72,8 +59,8 @@ export default class IOSSliderWithTabs extends Component<Props> {
     };
 
     __handleTabScroll = (event)=> {
-        var page=Math.round(event.nativeEvent.targetContentOffset.x/200);
-        this.scrollPageToPosition(page+1);
+        var page = Math.round(event.nativeEvent.targetContentOffset.x / 200);
+        this.scrollPageToPosition(page + 1);
     };
 
     __handlePageScroll = (event)=> {
@@ -87,7 +74,7 @@ export default class IOSSliderWithTabs extends Component<Props> {
         this.__changeTab(0);
     };
 
-    render() {
+    render = () => {
         return (
 
             <View
