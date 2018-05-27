@@ -35,6 +35,9 @@ const pageOffset = pageWidth / 2;
 // import Pager from './ViewPager'
 export default class App extends Component<Props> {
 
+    currentPage = 0;
+    currentTab = 0;
+
     constructor() {
         super();
         this.state = {tabs: ["Tab 1", "Tab 2", "Tab 3", "Tab 4"]};
@@ -52,7 +55,7 @@ export default class App extends Component<Props> {
 
     __changeTab = (position)=> {
 
-        this.scrollTabToPage(position - 1);
+        this.scrollTabToPosition(position - 1);
 
     };
     renderTabs = ()=> {
@@ -68,45 +71,55 @@ export default class App extends Component<Props> {
 
     };
 
-    scrollTabToPage = (page)=> {
+    scrollTabToPosition = (page)=> {
+
         this.refs.tabs.scrollTo(0, (page * tabOffset) + 20)
     };
 
-    scrollPageToPage = (page)=> {
+    scrollPageToPosition = (page)=> {
         const position = page * pageWidth - peekWidth / 2;
         this.refs.pages.scrollTo(0, position)
     };
 
     __handleTabScroll = (event)=> {
-        const currentPage = this.__getCurrentPage();
-        var page = event.nativeEvent.contentOffset.x / tabOffset;
-        if (currentPage !== page) {
-            this.scrollPageToPage(Math.floor(page) + 1);
+        this.currentTab = Math.floor(event.nativeEvent.contentOffset.x / tabOffset);
+
+        /*console.log("new tab " + this.currentTab);
+        var newPage;
+        if(this.currentTab==-1){
+            newPage=-1;
         }
+        else{
+            newPage=this.currentTab*2+1;
+        }
+
+        console.log("Current page "+this.currentPage);
+        console.log("New page "+newPage);
+        /!*if (this.currentPage!== newPage) {
+            this.scrollPageToPosition(newPage);
+        }*!/*/
     };
 
-    __getCurrentTab() {
-        // return Math.floor(this.refs.tabs.contentOffset.x / tabOffset);
-    }
-
-    __getCurrentPage() {
-        console.log("Hello");
-        console.log(this.refs.pages);
-        // return Math.floor(this.refs.pages.contentOffset.x / tabOffset);
-    }
-
     __handlePageScroll = (event)=> {
-        const currentTab = this.__getCurrentTab();
-        var page = event.nativeEvent.contentOffset.x / pageOffset;
-        if (page !== currentTab) {
-            // this.scrollTabToPage(page);
+        // const currentTab = this.__getCurrentTab();
+        var page= Math.floor(event.nativeEvent.contentOffset.x / pageOffset);
+        this.currentPage=page+1;
+        var newTab;
+        if(this.currentPage==0){
+            newTab=-1;
+        }else{
+            newTab=this.currentPage/2-1;
+        }
+        if (this.currentTab !== newTab) {
+            this.scrollTabToPosition(newTab)
         }
 
-        // console.log("Page " +Math.floor(page));
-    }
+    };
+
+
     componentDidMount = ()=> {
-        this.scrollTabToPage(-1);
-        this.scrollPageToPage(-1);
+        this.scrollTabToPosition(-1);
+        this.scrollPageToPosition(0);
     };
 
     render() {
