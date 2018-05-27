@@ -1,9 +1,11 @@
-/*
-/!**
+/**
+ * Created by rushabh on 27/05/18.
+ */
+/**
  * Sample React Native App
  * https://github.com/facebook/react-native
  * @flow
- *!/
+ */
 
 import React, {Component} from 'react';
 import {
@@ -34,10 +36,7 @@ const tabOffset = tabWidth / 2;
 const pageWidth = width - peekWidth;
 const pageOffset = pageWidth / 2;
 // import Pager from './ViewPager'
-export default class App extends Component<Props> {
-
-    currentPage = 0.0;
-    currentTab = 0.0;
+export default class IOSSliderWithTabs extends Component<Props> {
 
     constructor() {
         super();
@@ -84,15 +83,13 @@ export default class App extends Component<Props> {
     };
 
     __handleTabScroll = (event)=> {
-
-        // var page=Math.round(event.nativeEvent.targetContentOffset.x/200);
-        // this.scrollPageToPosition(page+1);
+        var page=Math.round(event.nativeEvent.targetContentOffset.x/200);
+        this.scrollPageToPosition(page+1);
     };
 
     __handlePageScroll = (event)=> {
-        console.log(event.nativeEvent)
-        // var newPage = Math.floor(event.nativeEvent.targetContentOffset.x / pageWidth);
-        // this.scrollTabToPosition(newPage);
+        var newPage = Math.floor(event.nativeEvent.targetContentOffset.x / pageWidth);
+        this.scrollTabToPosition(newPage);
 
     };
 
@@ -114,7 +111,6 @@ export default class App extends Component<Props> {
                     snapToInterval={width - tabWidth}
                     snapToAlignment={"end"}
                     scrollEventThrottle={0}
-                    pagingEnabled={true}
                     onScrollEndDrag={this.__handleTabScroll}
                     contentInset={{
                         top: 0,
@@ -131,7 +127,6 @@ export default class App extends Component<Props> {
                     alwaysBounceHorizontal={false}
                     showsHorizontalScrollIndicator={false}
                     horizontal={true}
-                    pagingEnabled={true}
                     onScrollEndDrag={this.__handlePageScroll}
                     decelerationRate={0}
 
